@@ -6,9 +6,10 @@ from langchain.agents import create_agent, AgentState
 from langchain_core.messages import AnyMessage
 from langchain_core.runnables import RunnableConfig
 
+from src.agent.Tools.tool_demo04 import greet_user, get_user_info
 from src.agent.Tools.runnable_tool02 import runnable_tool
 from src.agent.Tools.tool_demo01 import calculate
-from src.agent.Tools.tool_demo03 import get_user_info
+from src.agent.my_state import CustomState
 from src.agent.my_llm import llm
 
 
@@ -22,8 +23,9 @@ def prompt(state: AgentState, config: RunnableConfig) -> list[AnyMessage]:
 # Define the graph
 graph = create_agent(
     llm,
-    tools=[calculate, runnable_tool,get_user_info],
-    system_prompt="你是一个智能助手，请回答我的问题。"
+    tools=[calculate, runnable_tool, get_user_info, greet_user],
+    system_prompt="你是一个智能助手，请回答我的问题。",
+    state_schema=CustomState,
 )
 
 # result = graph.stream(
